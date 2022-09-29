@@ -37,7 +37,7 @@ def res_median_from_y(y,x,xmax):
     return (res_x3_mean, res_x4_mean, res_x3_rhs_mean, res_x4_rhs_mean)
 
 
-def bandpower(ylist, fs, fmin, nfft=0, window='blackman'):
+def bandpower(ylist, fs, fmin, nfft=0, window='hamming'):
     
     power = 0
     Pxx_list = []
