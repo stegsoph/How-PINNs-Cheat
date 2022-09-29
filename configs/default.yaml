@@ -1,0 +1,62 @@
+#################################
+# Version & seeds settings
+#################################
+
+version: "default"  # default manual_IC_loss manual_F_losses
+
+directory: ''
+
+seed_data: 0
+seed_pinn: 3
+save_data: True 
+
+#################################
+# System settings
+#################################
+
+x_domain: [0, 5]
+x0: 0
+y0: [0, 0, 0, 0]
+l1: 1
+l2: 1
+m1: 1
+m2: 1
+g: 9.81
+
+#################################
+# Data settings
+#################################
+
+n_col: 1024
+
+#################################
+# Preprocessing settings
+#################################
+
+norm_flag: True
+preprocessing_domain: [-5,5]
+
+#################################
+# PhysicsInformedNN settings
+#################################
+
+n_hidden: 6
+n_neurons: 30
+activation: 'swish'
+
+#################################
+# Training settings
+#################################
+
+n_epochs: 25_000
+learning_rate: 0.01
+decay_rate: 0.9
+
+#################################
+# Callback and recording settings
+#################################
+
+n_pred_log: 10
+freq_log: 10
+freq_print: 500
+keys_print: ['loss_train', 'loss_IC', 'loss_Fx1', 'loss_Fx2', 'loss_Fx3', 'loss_Fx4']
