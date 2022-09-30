@@ -4,3 +4,4 @@ tmp
 \.tmp*
 .tmp*
 tmp*
+__pycache__
