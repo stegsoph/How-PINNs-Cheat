@@ -11,7 +11,7 @@ def angles2xy(th1, th2, l1 = 1, l2 = 1):
 
 # Ensure that the angles stays between [-pi, pi)
 def wrap_angles(angle, wrap=True):
-    # result = ( angle ) % (2 * np.pi ) # [0, 2pi)
+
     if wrap:
         result = ( angle + np.pi) % (2 * np.pi ) - np.pi   # [-pi, pi)
     else:
