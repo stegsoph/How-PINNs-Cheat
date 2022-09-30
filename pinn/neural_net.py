@@ -3,9 +3,6 @@ import tensorflow as tf
 from pinn.data_loader import DataLoader
 from pinn.loss_functions import Loss
 from pinn.callback import CustomCallback
-import numpy as np
-
-# tf.config.run_functions_eagerly(True)
 
 ##############################################################################    
     
@@ -81,7 +78,6 @@ class PhysicsInformedNN(tf.keras.Sequential):
   # PINN functions
   ##############################################################################
 
-  
     # --------------------------------------------------------------------------
     # Normalization of input vector
     def normalization(self, X):
