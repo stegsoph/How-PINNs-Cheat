@@ -2,32 +2,24 @@ import re, os, sys
 from itertools import groupby
 import json
 from pathlib import Path
-import numpy as np
-import pandas as pd
-import pickle
-from utils.postprocessing import PostProcessing
-from utils.exact import pendulum,data_generation_rk
 
-class FileProcessing(PostProcessing):
+class FileProcessing():
   
-    def __init__(self,log_path, search_path, method='RK45'):
+    def __init__(self,log_path, search_path):
         self.log_path = log_path
         self.search_path = search_path
-        self.method = method
 
     def replace_double(self):
 
-    
         search_str = str(Path(self.search_path, '*.json'))
         files = list(self.log_path.rglob(search_str.replace('[', '[[]')))
 
         search_str = str(Path(self.search_path, '*.pkl'))
         files.extend( list(self.log_path.rglob(search_str.replace('[', '[[]'))) )
 
-        for idx, file in enumerate(files):
+        for file in files:
             file_new = re.sub(" \(\d\)", '', str(file)) 
             if str(file) != (file_new):
-                # os.renames(file, file_new) 
                 try:
                     os.renames(file, file_new) 
                     print(str(file))
@@ -48,7 +40,6 @@ class FileProcessing(PostProcessing):
         # remove empty subfolders
         files = os.listdir(log_path)
 
-        max_idx = 100
         if len(files):
             for f in files:
                 fullpath = os.path.join(log_path, f)
@@ -84,7 +75,6 @@ class FileProcessing(PostProcessing):
                 continue
             else:
                 break
-
 
     def group_files(self, data_extension='*.json', verbose=True):
 
@@ -137,48 +127,3 @@ class FileProcessing(PostProcessing):
 
         return data
 
-
-    def load_grouped_weights(self, index=[0]):
-        '''
-        This function loads the pickle files in which the weights for the corresponding epoch are stored.
-        '''  
-        # print(self.eq_files[0])
-        files_plot_nested = [*[self.eq_files[i] for i in index]]
-        files_plot_flatten = [item for sublist in files_plot_nested for item in sublist] 
-        # print(files_plot_flatten)
-        weights = []
-        for weights_file in files_plot_flatten:
-          # print(weights_file)
-          with open(weights_file, 'rb') as pickle_file:
-              weights.append(pickle.load(pickle_file))
-
-        return weights
-
-    def load_errors_v2(self, data):
-        
-        data_new = []
-        for log in data:
-            self.log = log.copy()
-            error, _ = self.estimation_error(log=log)
-            MSE = np.mean(np.mean(error))
-            log['MSE'] = MSE
-            log['loss_F'] = sum( [log['loss_Fx'+str(i)][-1] for i in [1,2,3,4]] )
-            data_new.append(log)
-
-            if 'std' in ''.join(log['log_name']):
-                std = ''.join(log['log_name']).split("std_",1)[1]
-            else:
-                std = 'std_not_specified'
-            log['std'] = std
-        df = pd.json_normalize(data_new)
-
-        df['alpha_data'] = df['lambda_data'].apply(lambda x: np.round( x/(x+1) , 6 )    )
-        df['theta0'] = df['y0'].apply( lambda x:  np.round( x[0] * 180/np.pi , 3) )
-        df['data_missing_interval']=df['data_domain_full'].apply(lambda x: x[1]-x[0])
-        df['name']=df['log_name'].apply(lambda x: x[1])
-        df['xmax']=df['x_domain'].apply(lambda x: x[1])
-
-        return df
-            
-        
-   
