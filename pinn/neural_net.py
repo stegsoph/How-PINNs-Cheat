@@ -38,7 +38,7 @@ class PhysicsInformedNN(tf.keras.Sequential):
         self.n_epochs = config['n_epochs']
         self.learning_rate = config['learning_rate']
         self.decay_rate = config['decay_rate']
-        self.alpha_IC = config['alpha_IC']
+        self.lambda_IC = config['lambda_IC']
 
         print('*** PINN build & initialized ***')
 
@@ -167,7 +167,7 @@ class PhysicsInformedNN(tf.keras.Sequential):
             loss_F_weighted = ( loss_Fx1 + loss_Fx2 + loss_Fx3 + loss_Fx4 ) 
 
             # Training loss
-            loss_train = ( self.alpha_IC * loss_IC + ( 1 - self.alpha_IC ) * loss_F_weighted  )
+            loss_train = ( self.lambda_IC * loss_IC + loss_F_weighted  ) / ( 1 + self.lambda_IC )
 
         # retrieve gradients 
         grads_F = tape.gradient(loss_F_weighted, self.neural_net.weights)    
@@ -176,7 +176,7 @@ class PhysicsInformedNN(tf.keras.Sequential):
         del tape      
 
         # final gradient for optimization step       
-        grads = [ ( self.alpha_IC * g_IC + ( 1 - self.alpha_IC ) * g_F  ) for g_F, g_IC in zip(grads_F, grads_IC)]   
+        grads = [ ( self.lambda_IC * g_IC + g_F  ) / ( 1 + self.lambda_IC ) for g_F, g_IC in zip(grads_F, grads_IC)]   
           
         # perform single GD step 
         self.optimizer.apply_gradients(zip( grads, self.neural_net.weights))     

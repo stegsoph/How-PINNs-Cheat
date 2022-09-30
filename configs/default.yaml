@@ -43,6 +43,7 @@ preprocessing_domain: [-5,5]
 n_hidden: 6
 n_neurons: 30
 activation: 'swish'
+lambda_IC: 1
 
 #################################
 # Training settings

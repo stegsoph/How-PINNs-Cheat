@@ -1,7 +1,6 @@
 import numpy as np
 np.seterr(divide='ignore', invalid='ignore')
 
-
 # Convert angles into x-y coordinates
 def angles2xy(th1, th2, l1 = 1, l2 = 1):
     x1 = l1 * np.sin(th1)

@@ -64,7 +64,7 @@ def return_log_path(config):
 
         # loss weights
         elif string == 'loss': 
-          p = Path(p, 'alpha_IC_' + str(config['alpha_IC']))
+          p = Path(p, 'lambda_IC_' + str(config['lambda_IC']))
 
     #---------------------------------------------------------------------
     file_name = 'SD_'+str(config['seed_data'])+'_SP_'+str(config['seed_pinn'])+'.json'
