@@ -1,6 +1,3 @@
-# from configs.config_loader import load_config
-# config = load_config('../configs/default.yaml', verbose=False)
-
 from pathlib import Path
 import numpy as np
 from decimal import Decimal
