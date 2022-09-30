@@ -7,8 +7,26 @@ Our results demonstrate that PINNs do not exhibit any sensitivity to perturbatio
 We thus hypothesize that the PINNs "cheat" by shifting the initial conditions to values that correspond to physically correct solutions that are easier to learn.
 Initial experiments suggest that domain decomposition combined with an appropriate loss weighting scheme mitigates this effect and allows convergence to the desired solution.
 
-## Code
+## Instructions
+
 The repository contains all code needed to reproduce the results of this work. 
 
-## Instructions
+
+#### Requirements
+
+```
+tensorflow 2.3.0
+numpy 1.21.2
+scipy 1.7.1
+matplotlib 3.4.3
+yaml 6.0
+json 2.0.9
+notebook 6.4.5
+```
+
+
+#### Usage
+
+* Run and train PINNs to simulate the double pendulum: `main.ipynb`
+* Evaluate the results and analyze the PINN prediction compared to RK45: `analysis.ipynb`
 
